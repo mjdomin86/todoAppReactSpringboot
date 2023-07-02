@@ -1,13 +1,15 @@
 package com.backend.todolist.auth.jwt;
 
+import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
 
+import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,7 +26,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtTokenGenerator {
-    private String secretKey = "thisissupersecretkey";
+    @Value("${todo.app.jwtSecret}")
+    private String jwtSecret;
 
     private final CustomUserDetailsService customUserDetailsService;
 
@@ -34,7 +37,7 @@ public class JwtTokenGenerator {
 
     @PostConstruct
     protected void init() {
-        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+        jwtSecret = Base64.getEncoder().encodeToString(jwtSecret.getBytes());
     }
     
     public String createToken(String username, List<String> roles) {
@@ -43,12 +46,13 @@ public class JwtTokenGenerator {
         Date now = new Date();
         // 1h
         long validityInMilliseconds = 3600000;
+        Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
         Date validity = new Date(now.getTime() + validityInMilliseconds);
         return Jwts.builder()
             .setClaims(claims)
             .setIssuedAt(now)
             .setExpiration(validity)
-            .signWith(SignatureAlgorithm.HS256, secretKey)
+            .signWith(key, SignatureAlgorithm.HS256)
             .compact();
     }
     
@@ -58,7 +62,8 @@ public class JwtTokenGenerator {
     }
     
     public String getUsername(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
     }
     
     public String resolveToken(HttpServletRequest req) {
@@ -71,11 +76,9 @@ public class JwtTokenGenerator {
     
     public boolean validateToken(String token) {
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            if (claims.getBody().getExpiration().before(new Date())) {
-                return false;
-            }
-            return true;
+            Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+            Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            return !claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
             throw new InvalidJwtAuthenticationException("Expired or invalid JWT token");
         }

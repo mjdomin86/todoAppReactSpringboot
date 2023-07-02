@@ -1,6 +1,6 @@
 package com.backend.todolist.auth.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,18 +19,23 @@ import com.backend.todolist.errorhandler.BadRequestException;
 
 @Service
 public class UserService {
-	@Autowired
-    UserRepository userRepository;
+	final UserRepository userRepository;
 	
-	@Autowired
-	AuthenticationManager authenticationManager;
+	final AuthenticationManager authenticationManager;
 	
-	@Autowired
-    PasswordEncoder passwordEncoder;
+	final PasswordEncoder passwordEncoder;
     
-	@Autowired
-    JwtTokenGenerator jwtTokenGenerator;
-	
+	final JwtTokenGenerator jwtTokenGenerator;
+
+
+	public UserService(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtTokenGenerator jwtTokenGenerator) {
+		this.userRepository = userRepository;
+		this.authenticationManager = authenticationManager;
+		this.passwordEncoder = passwordEncoder;
+		this.jwtTokenGenerator = jwtTokenGenerator;
+
+	}
+
 	public UserSignupResponse signup(UserSignupRequest userSignupRequest) {
 		try {
 			String username = userSignupRequest.getUsername();
@@ -55,9 +60,9 @@ public class UserService {
 	public UserSigninResponse signin(UserSigninRequest userSigninRequest) {
 		try {
 			String username = userSigninRequest.getUsername();
-	        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, userSigninRequest.getPassword()));
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, userSigninRequest.getPassword()));
 	        String token = jwtTokenGenerator.createToken(username, this.userRepository.findByUsername(username).getRoleAsList());
-	        
+
 			return new UserSigninResponse(username, token);
 		} catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username/password");
