@@ -1,15 +1,14 @@
 package com.backend.todolist.auth.model;
 
-import java.util.Arrays;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+
+import java.util.Collections;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.validation.constraints.NotEmpty;
 
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue
@@ -20,9 +19,9 @@ public class User {
     private String username;
     
     @NotEmpty(message = "Password is required")
-    private String password;
+    private String pass;
 
-    private String role;
+    private String userRole;
     
     protected User() {
 		
@@ -31,8 +30,8 @@ public class User {
     public User(String username, String password) {
 		super();
 		this.username = username;
-		this.password = password;
-		this.role = "User";
+		this.pass = password;
+		this.userRole = "User";
 	}
 
 	public Long getId() {
@@ -51,23 +50,23 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPass() {
+        return pass;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPass(String pass) {
+        this.pass = pass;
     }
 
     public List<String> getRoleAsList() {
-        return Arrays.asList(this.role);
+        return Collections.singletonList(this.userRole);
     }
 
-    public String getRole() {
-		return role;
+    public String getUserRole() {
+		return userRole;
 	}
 
-	public void setRoles(String role) {
-        this.role = role;
+	public void setUserRole(String role) {
+        this.userRole = role;
     }
 }

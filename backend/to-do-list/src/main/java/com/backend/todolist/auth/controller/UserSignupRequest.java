@@ -1,7 +1,7 @@
 package com.backend.todolist.auth.controller;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 public class UserSignupRequest {
 	@NotEmpty(message = "Username is required")

@@ -1,9 +1,10 @@
 package com.backend.todolist.controller;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.Date;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 public class TodoUpdateRequest {
 	@NotEmpty(message = "Title is required")

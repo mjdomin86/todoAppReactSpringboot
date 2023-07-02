@@ -4,9 +4,9 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,12 +25,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtTokenGenerator {
     private String secretKey = "thisissupersecretkey";
-    
-    private long validityInMilliseconds = 3600000; // 1h
-    
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
-    
+
+    private final CustomUserDetailsService customUserDetailsService;
+
+    public JwtTokenGenerator(CustomUserDetailsService customUserDetailsService) {
+        this.customUserDetailsService = customUserDetailsService;
+    }
+
     @PostConstruct
     protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
@@ -40,6 +41,8 @@ public class JwtTokenGenerator {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("roles", roles);
         Date now = new Date();
+        // 1h
+        long validityInMilliseconds = 3600000;
         Date validity = new Date(now.getTime() + validityInMilliseconds);
         return Jwts.builder()
             .setClaims(claims)

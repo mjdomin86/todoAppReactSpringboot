@@ -56,3 +56,8 @@ buildNumber.properties
 .mvn/timing.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
+/.idea/
+/backend/to-do-list/testdb.mv.db
+/backend/to-do-list/testdb.trace.db
+/testdb.mv.db
+/testdb.trace.db

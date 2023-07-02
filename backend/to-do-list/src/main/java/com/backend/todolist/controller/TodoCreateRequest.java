@@ -1,9 +1,9 @@
 package com.backend.todolist.controller;
 
-import java.util.Date;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 public class TodoCreateRequest {
 	@NotEmpty(message = "Title is required")
