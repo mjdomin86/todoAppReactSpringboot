@@ -1,0 +1,33 @@
+backend:
+  replicas: 1
+  rollOnUpgrade: false
+  image:
+    repository:  localhost:5000/todoapp-backend
+    tag: 0.0.1
+    pullPolicy: Always
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "1Gi"
+    limits:
+      cpu: "100m"
+      memory: "2Gi"
+  service:
+    name: todoapp-backend
+
+frontend:
+  replicas: 1
+  rollOnUpgrade: false
+  image:
+    repository: localhost:5000/todoapp-frontend
+    tag: 0.0.1
+    pullPolicy: Always
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "1Gi"
+    limits:
+      cpu: "100m"
+      memory: "2Gi"
+  service:
+    name: todoapp-frontend
