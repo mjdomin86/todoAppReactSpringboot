@@ -201,7 +201,7 @@ function Todos({isAuthenticated, setIsAuthenticated}) {
               <td>{todo.title}</td>
               <td>{moment(todo.targetDate).format('ll')}</td>
               <td>{todo.isCompleted.toString()}</td>
-							<td><button className="btn btn-success" onClick={() => markCompleted(todo.id)}>Mark Completed</button></td>
+							<td><button className="btn btn-success" onClick={() => markCompleted(todo.id)}>{todo.isCompleted? 'Mark pending' : 'Mark Completed'}</button></td>
 							<td><Link to={{pathname: `/update/${todo.id}`}}><button className="btn btn-primary">Update</button></Link></td>
 							<td><button className="btn btn-danger" onClick={() => deleteTodo(todo.id)}>Delete</button></td>
             </tr>
