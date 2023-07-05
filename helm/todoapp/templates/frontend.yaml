@@ -19,7 +19,7 @@ spec:
       labels:
         app.kubernetes.io/name: {{ .Release.Name }}-{{ include "service.template" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
-        type: {{ .Release.Name }}
+        type: {{ .Release.Name }}-{{ include "service.template" . }}
       annotations:
         {{- if .Values.frontend.rollOnUpgrade }}
         rollme: {{ randAlphaNum 5 | quote }}
@@ -49,7 +49,7 @@ metadata:
     type: {{ .Release.Name }}
 spec:
   selector:
-    type: {{ .Release.Name }}
+    type: {{ .Release.Name }}-{{ include "service.template" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
   ports:
     - name: http

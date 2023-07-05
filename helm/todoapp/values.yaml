@@ -8,10 +8,10 @@ backend:
   resources:
     requests:
       cpu: "50m"
-      memory: "1Gi"
+      memory: "0.5Gi"
     limits:
       cpu: "100m"
-      memory: "2Gi"
+      memory: "1Gi"
   service:
     name: todoapp-backend
 
@@ -25,9 +25,9 @@ frontend:
   resources:
     requests:
       cpu: "50m"
-      memory: "1Gi"
+      memory: "0.5Gi"
     limits:
       cpu: "100m"
-      memory: "2Gi"
+      memory: "1Gi"
   service:
     name: todoapp-frontend

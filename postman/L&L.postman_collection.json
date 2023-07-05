@@ -25,7 +25,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"password\": \"Test1234\",\n  \"username\": \"test2\"\n}",
+					"raw": "{\n  \"password\": \"Test1234\",\n  \"username\": \"test1\"\n}",
 					"options": {
 						"raw": {
 							"headerFamily": "json",
@@ -1396,16 +1396,6 @@
 		{
 			"name": "read All",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MSIsInJvbGVzIjpbIlVzZXIiXSwiaWF0IjoxNjg4MzMxMzM5LCJleHAiOjE2ODgzMzQ5Mzl9.XSJ8_uS_pGmNe17Fmkev3yKO1R7K8KJ5q4y_cl3ddsA",
-							"type": "string"
-						}
-					]
-				},
 				"method": "GET",
 				"header": [
 					{
