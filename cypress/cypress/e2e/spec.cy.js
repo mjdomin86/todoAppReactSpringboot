@@ -1,6 +1,7 @@
 describe('Test e2e', () => {
   it('Check if a todo is completed', () => {
-    cy.visit('http://localhost:3000/');
+    var url = Cypress.env('URL');
+    cy.visit(url);
     cy.get('.nav-link:nth-child(2) > a').click();
     cy.get('.form-group:nth-child(2) > .form-control').click();
     cy.get('.form-group:nth-child(2) > .form-control').type('test1');
