@@ -25,12 +25,13 @@ function Todos({isAuthenticated, setIsAuthenticated}) {
 		const loadData = async () => {
 			let response = null;
 			try {
-				let url = `http://localhost:3001/api/todo/${pageNumber - 1}/${pageSize}`;
+				const backendUrl = process.env.REACT_APP_BACKEND_URL;
+				let url = `${backendUrl}/api/todo/${pageNumber - 1}/${pageSize}`;
 
 				if(filter === 'Completed'){
-					url = `http://localhost:3001/api/todo/${pageNumber - 1}/${pageSize}?isCompleted=true`;
+					url = `${backendUrl}/api/todo/${pageNumber - 1}/${pageSize}?isCompleted=true`;
 				} else if(filter === 'Not Completed'){
-					url = `http://localhost:3001/api/todo/${pageNumber - 1}/${pageSize}?isCompleted=false`;
+					url = `${backendUrl}/api/todo/${pageNumber - 1}/${pageSize}?isCompleted=false`;
 				}
 				
 				response = await axios.get(url, {headers: {'Authorization': `Bearer ${sessionStorage.getItem('token')}`,}});
@@ -130,7 +131,8 @@ function Todos({isAuthenticated, setIsAuthenticated}) {
 
 	const markCompleted = async (id) => {
 		try {
-      await axios.put(`http://localhost:3001/api/todo/${id}/markcomplete`, {}, {
+			const backendUrl = process.env.REACT_APP_BACKEND_URL;
+      await axios.put(`${backendUrl}/api/todo/${id}/markcomplete`, {}, {
 				headers: {
 					'Authorization': `Bearer ${sessionStorage.getItem('token')}`
 				}
@@ -149,7 +151,8 @@ function Todos({isAuthenticated, setIsAuthenticated}) {
 
 	const deleteTodo = async (id) => {
 		try {
-      await axios.delete(`http://localhost:3001/api/todo/${id}`, {
+			const backendUrl = process.env.REACT_APP_BACKEND_URL;
+      await axios.delete(`${backendUrl}/api/todo/${id}`, {
 				headers: {
 					'Authorization': `Bearer ${sessionStorage.getItem('token')}`
 				}

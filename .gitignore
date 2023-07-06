@@ -61,3 +61,4 @@ buildNumber.properties
 /backend/to-do-list/testdb.trace.db
 /testdb.mv.db
 /testdb.trace.db
+/frontend/.env

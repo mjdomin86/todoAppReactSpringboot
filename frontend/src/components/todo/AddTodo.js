@@ -19,7 +19,8 @@ function AddTodo({isAuthenticated, setIsAuthenticated}) {
     e.preventDefault();
 
     try {
-      await axios.post('http://localhost:3001/api/todo', {title, targetDate}, {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
+      await axios.post(`${backendUrl}/api/todo`, {title, targetDate}, {
         headers: {
           'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
         }

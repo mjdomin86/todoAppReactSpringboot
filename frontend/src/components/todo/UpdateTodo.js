@@ -24,7 +24,8 @@ function UpdateTodo({isAuthenticated, setIsAuthenticated, match}) {
     e.preventDefault();
   
     try {
-      await axios.put(`http://localhost:3001/api/todo/${match.params.id}`, {title, targetDate}, {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
+      await axios.put(`${backendUrl}/api/todo/${match.params.id}`, {title, targetDate}, {
         headers: {
           'Authorization': `Bearer ${sessionStorage.getItem('token')}`
         }
@@ -49,7 +50,8 @@ function UpdateTodo({isAuthenticated, setIsAuthenticated, match}) {
     const loadData = async () => {
       let response = null;
       try {
-        response = await axios.get(`http://localhost:3001/api/todo/${match.params.id}`, {
+        const backendUrl = process.env.REACT_APP_BACKEND_URL;
+        response = await axios.get(`${backendUrl}/api/todo/${match.params.id}`, {
           headers: {
 						'Authorization': `Bearer ${sessionStorage.getItem('token')}`
 					}
