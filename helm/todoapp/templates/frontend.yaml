@@ -40,7 +40,7 @@ spec:
           # give the app 30*10s=5m to startup
           env:
             - name: REACT_APP_BACKEND_URL
-              value: {{ .Release.Name }}-{{ .Values.backend.service.name }}
+              value: "http://{{ .Release.Name }}-{{ .Values.backend.service.name }}:3001"
       restartPolicy: Always
 ---
 apiVersion: v1

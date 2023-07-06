@@ -1,16 +1,18 @@
 describe('Test e2e', () => {
   it('Check if a todo is completed', () => {
     var url = Cypress.env('URL');
+    var username = Cypress.env('USERNAME');
+    var password = Cypress.env('PASSWORD');
     cy.visit(url);
     cy.get('.nav-link:nth-child(2) > a').click();
     cy.get('.form-group:nth-child(2) > .form-control').click();
-    cy.get('.form-group:nth-child(2) > .form-control').type('test1');
+    cy.get('.form-group:nth-child(2) > .form-control').type(username);
     cy.get('.form-group:nth-child(3) > .form-control').click();
-    cy.get('.form-group:nth-child(3) > .form-control').type('Test1234');
+    cy.get('.form-group:nth-child(3) > .form-control').type(password);
     cy.get('.btn').click();
     cy.get('form').submit();
     cy.get('.nav-link:nth-child(2) > a').click();
-    cy.visit('http://localhost:3000/');
+    cy.visit(url);
     cy.get('.nav-link:nth-child(3) > a').click();
     cy.get('.form-group:nth-child(2) > .form-control').click();
     cy.get('.form-group:nth-child(2) > .form-control').type('Test 1');
