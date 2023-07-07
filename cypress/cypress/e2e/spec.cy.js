@@ -1,7 +1,7 @@
 describe('Test e2e', () => {
   it('Check if a todo is completed', () => {
 
-    var url = Cypress.env('URL') + 'signin';
+    var url = Cypress.env('URL');
     var username = Cypress.env('USERNAME');
     var password = Cypress.env('PASSWORD');
 
@@ -9,14 +9,14 @@ describe('Test e2e', () => {
     cy.intercept('GET', '**/count').as('apiRequests');
 
     cy.visit(url);
+    cy.wait('@apiRequests');
+
+    cy.contains('a', 'Signin').click();
     cy.get('input[placeholder="Username"].form-control').type(username);
     cy.get('input[placeholder="Password"].form-control').type(password);
 
     cy.get('form').submit().then(() => {
-      // Esperar a que finalicen todas las solicitudes
-      cy.wait('@apiRequests');
 
-      // Obtener el enlace con el texto "Add Todo"
       cy.contains('a', 'Add Todo').click();
 
       cy.get('input[placeholder="Title"].form-control').type('Test Todo');
