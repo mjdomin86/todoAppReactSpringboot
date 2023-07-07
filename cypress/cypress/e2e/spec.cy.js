@@ -9,14 +9,13 @@ describe('Test e2e', () => {
     cy.intercept('GET', '**/count').as('apiRequests');
 
     cy.visit(url);
-    cy.wait('@apiRequests');
 
     cy.contains('a', 'Signin').click();
     cy.get('input[placeholder="Username"].form-control').type(username);
     cy.get('input[placeholder="Password"].form-control').type(password);
 
     cy.get('form').submit().then(() => {
-
+      cy.wait('@apiRequests');
       cy.contains('a', 'Add Todo').click();
 
       cy.get('input[placeholder="Title"].form-control').type('Test Todo');
