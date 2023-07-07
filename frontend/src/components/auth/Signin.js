@@ -18,6 +18,7 @@ function Signin({isAuthenticated, setIsAuthenticated}) {
 
     try {
       const backendUrl = process.env.REACT_APP_BACKEND_URL;
+      console.log("url: " + backendUrl);
       const response = await axios.post(`${backendUrl}/api/auth/signin`, {username, password});
       sessionStorage.setItem('token', response.data.token);
       sessionStorage.setItem('name', response.data.username);

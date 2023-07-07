@@ -10,7 +10,7 @@ describe('Test e2e', () => {
 
     cy.visit(url);
 
-    cy.contains('a', 'Signup').click();
+    cy.contains('a', 'Signin').click();
     cy.get('input[placeholder="Username"].form-control').type(username);
     cy.get('input[placeholder="Password"].form-control').type(password);
 
