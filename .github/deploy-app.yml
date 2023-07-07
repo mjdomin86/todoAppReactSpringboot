@@ -1,0 +1,72 @@
+name: Docker Deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
+      - 'backend/**'
+      - 'postman/**'
+      - 'cypress/**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and tag Docker images
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          cd backend
+          version=$(grep -oPm1 "(?<=<version>)[^<]+" pom.xml)
+          docker build --tag localhost:5000/backend:${version} .
+          cd ../frontend
+          docker build --tag localhost:5000/frontend:${version} .
+
+      - name: Log in to Docker registry
+        run: docker login localhost:5000 -u USERNAME -p PASSWORD
+
+      - name: Push Docker images
+        run: |
+          docker push localhost:5000/backend:${version}
+          docker push localhost:5000/frontend:${version}
+
+      - name: Deploy to Kubernetes cluster
+        id: helm
+        uses: azure/k8s-set-context@v1
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+
+      - name: Install Helm
+        run: |
+          curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+      - name: Deploy Helm chart
+        run: helm upgrade --install todoapp helm/todoapp
+
+      - name: Run tests with Testkube
+        id: testkube
+        run: |
+          # Coloca aquí el comando para ejecutar los tests con Testkube
+
+      - name: Check test results
+        if: ${{ steps.testkube.outcome != 'success' }}
+        run: |
+          echo "Tests failed. Rolling back deployment..."
+          helm rollback todoapp 
+
+      - name: Finalize deployment
+        if: ${{ steps.testkube.outcome == 'success' }}
+        run: echo "Deployment completed successfully!"
